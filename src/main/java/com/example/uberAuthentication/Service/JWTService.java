@@ -40,6 +40,10 @@ public class JWTService implements CommandLineRunner {
                 .compact();
     }
 
+    public String createToken(String email) {
+        return createToken(new HashMap<>(), email);
+    }
+
     public Claims extractAllPayloads(String token) {
         return Jwts
                 .parser()
