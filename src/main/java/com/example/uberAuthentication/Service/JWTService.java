@@ -62,6 +62,26 @@ public class JWTService implements CommandLineRunner {
         return extractClaim(token,Claims::getSubject);
     }
 
+    public Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+
+    public Object extractPayload(String token, String payloadKey) {
+        Claims claim = extractAllPayloads(token);
+        return (Object) claim.get(payloadKey);
+    }
+
+
+    public Boolean validateToken(String token, String email) {
+        final String userEmailFetchedFromToken = extractEmail(token);
+        return (userEmailFetchedFromToken.equals(email)) && !isTokenExpired(token);
+    }
+
 
     private Key getSignKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));

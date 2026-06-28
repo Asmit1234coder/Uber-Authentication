@@ -2,6 +2,8 @@ package com.example.uberAuthentication.configurations;
 
 
 import com.example.uberAuthentication.Service.UseDetailServiceimpl;
+import com.example.uberAuthentication.filters.JwtAuthFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -22,10 +24,11 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 @EnableWebSecurity
 public class SpringSecurity implements WebMvcConfigurer {
 
-    private final UseDetailServiceimpl userDetailsService;
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
 
-    public SpringSecurity(UseDetailServiceimpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public UserDetailsService userDetailsService(){
+        return new UseDetailServiceimpl();
     }
 
     @Bean
